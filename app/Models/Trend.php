@@ -8,4 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class Trend extends Model
 {
     use HasFactory;
+    protected $fillable = [
+        'product_id',
+    ];
+
+    public function products()
+    {
+        return $this->belongsTo(Product::class, 'product_id', 'id');
+    }
 }

@@ -21,14 +21,30 @@ class FavouriteController extends Controller
     public function allFavouriteForUser()
     {
         $user = User::find(Auth::id());
-        $favourite = $user->favourite;
-        return response()->json($favourite);
+        $favourites = $user->favourite;
+        foreach ($favourites as $favourite) {
+            $favourite->image = asset('images/' . $favourite->image);
+        }
+        return response()->json($favourites);
     }
 
     public function allFavouriteForProduct($id)
     {
         $product = Product::find($id);
-        $favourite = $product->favourite;
-        return response()->json($favourite);
+        $favourites = $product->favourite;
+        return response()->json($favourites);
     }
+
+    // public function deleteFavourite($id){
+    //     $user = User::find(Auth::id());
+    //     $favourites=$user->favourite;
+    //     foreach($favourites as $fav){
+    //         if($fav->id==$id){
+
+    //         }
+    //     }
+
+    // }
+
+
 }

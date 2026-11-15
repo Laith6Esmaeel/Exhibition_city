@@ -4,10 +4,13 @@ use App\Http\Controllers\AdmissionsController;
 use App\Http\Controllers\CommentsController;
 use App\Http\Controllers\CompanyInformationController;
 use App\Http\Controllers\DepartmentController;
+use App\Http\Controllers\DiscountController;
 use App\Http\Controllers\FavouriteController;
 use App\Http\Controllers\FollowersController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SearchController;
+use App\Http\Controllers\TrendController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -108,4 +111,28 @@ Route::middleware(['auth:sanctum', 'setapplang'])->group(function () {
     Route::get('addFavourite/{id}', [FavouriteController::class, 'addFavourite'])->name('addFavourite');
     Route::get('allFavouriteForUser', [FavouriteController::class, 'allFavouriteForUser'])->name('allFavouriteForUser');
     Route::get('allFavouriteForProduct/{id}', [FavouriteController::class, 'allFavouriteForProduct'])->name('allFavouriteForProduct');
+});
+
+Route::post('search', [SearchController::class, 'search'])->middleware(['auth:sanctum', 'setapplang']);
+
+
+Route::middleware(['auth:sanctum', 'setapplang', 'companyControl'])->group(function () {
+    Route::post('/addDiscount/{id}', [DiscountController::class, 'addDis'])->name('addDiscount');
+    Route::get('/deleteDiscount/{id}', [DiscountController::class, 'deleteDis'])->name('deleteDiscount');
+
+    Route::post('/addTrend/{id}', [TrendController::class, 'addTrend'])->name('addTrend');
+    Route::get('/deleteTrend/{id}', [TrendController::class, 'deleteTrend'])->name('deleteTrend');
+});
+
+
+Route::middleware(['auth:sanctum', 'setapplang'])->group(function () {
+    Route::get('/showDiscount/{id}', [DiscountController::class, 'showDis'])->name('showDiscount');
+    Route::get('/allDiscount', [DiscountController::class, 'allDis'])->name('allDiscount');
+    Route::get('/showTrend', [TrendController::class, 'showTrend'])->name('showTrend');
+});
+
+
+Route::middleware(['auth:sanctum', 'setapplang', 'superAdmin'])->group(function () {
+    Route::get('/orderTrend', [AdmissionsController::class, 'orderTrend'])->name('orderTrend');
+    Route::post('/admissionTrend/{id}', [AdmissionsController::class, 'admissionTrend'])->name('admissionTrend');
 });

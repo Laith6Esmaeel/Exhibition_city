@@ -26,6 +26,7 @@ class NewPasswordController extends Controller
         ]);
         $checkNumber = Cache::get('checkNumber');
         if ($checkNumber) {
+
             $status = Password::reset(
                 $request->only('email', 'password', 'password_confirmation', 'token'),
                 function ($user) use ($request) {
@@ -41,9 +42,12 @@ class NewPasswordController extends Controller
                 throw ValidationException::withMessages([
                     'email' => [__($status)],
                 ]);
-
-                return response()->json(__('validation.The password has been changed successfully'));
             }
+            return response()->json(__('validation.The password has been changed successfully'));
+        } else {
+
+            // return response()->json($checkNumber);
+            return response()->json(__('validation.The password has been changed not  successfully'));
         }
     }
 
@@ -56,7 +60,7 @@ class NewPasswordController extends Controller
         $forgot_password = Cache::get('forgot_password');
 
         if ($validatedData['number'] === $forgot_password) {
-            Cache::put('checkNumber', true, 1000);
+            Cache::put('checkNumber', true, 86400);
             return response()->json(__('validation.You can change your password now'));
         } else {
             return response()->json(__('validation.The code is incorrect, please enter it again'));

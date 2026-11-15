@@ -25,6 +25,7 @@ Route::middleware(['guest'])->group(function () {
     Route::post('/reset-password', [NewPasswordController::class, 'store'])
         ->name('api.password.store');
 });
+
 Route::middleware(['auth:sanctum', 'setapplang', 'throttle:6,1'])->group(function () {
     Route::get('/verify-email/{id}', [VerifyEmailController::class, 'store'])
         ->name('verification.verify');
@@ -34,5 +35,5 @@ Route::middleware(['auth:sanctum', 'setapplang', 'throttle:6,1'])->group(functio
 });
 
 Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
-    ->middleware('auth')
+    ->middleware('auth:sanctum')
     ->name('api.logout');

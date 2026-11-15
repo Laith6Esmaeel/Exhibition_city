@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\CompanyInformation;
 use App\Models\Department;
+use App\Models\Trend;
 use Illuminate\Http\Request;
 
 class AdmissionsController extends Controller
@@ -42,5 +43,24 @@ class AdmissionsController extends Controller
             'admission' => $validationData['admission']
         ]);
         return response()->json(__('words.The company has been successfully accepted'));
+    }
+
+
+    public function admissionTrend(Request $request, $id)
+    {
+        $request->validate([
+            'admission' => 'required|string',
+        ]);
+        $validationData = Trend::find($id);
+        $validationData->update([
+            'admission' => $request['admission']
+        ]);
+        return response()->json(__('words.The product trend has been successfully accepted'));
+    }
+
+    public function orderTrend()
+    {
+        $order = Trend::where('admission', '0')->get();
+        return response()->json($order);
     }
 }

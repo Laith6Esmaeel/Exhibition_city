@@ -27,7 +27,7 @@ class EmailVerificationNotificationController extends Controller
                 ->line(__('validation.This Verify email code will expire in 60 minutes'));
         });
         $request->user()->sendEmailVerificationNotification();
-        Cache::put('randomNumber', $randomNumber, 1000);
+        Cache::put('randomNumber', $randomNumber, 86400);
 
         return response()->json(['status' => __('validation.The code has been sent to your email')]);
     }

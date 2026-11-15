@@ -29,10 +29,11 @@ class FollowersController extends Controller
         $user = User::find($user_id);
         $companies = $user->followers;
         $count = $user->followers()->count();
-        return response()->json([
-            'Following' =>  $count,
-            'companies' => $companies
-        ]);
+        foreach($companies as $company){
+            $company->company_logo = asset('images/' . $company->company_logo);
+            }
+            
+            return response()->json($companies);
     }
 
     public function companyFollowers($id)

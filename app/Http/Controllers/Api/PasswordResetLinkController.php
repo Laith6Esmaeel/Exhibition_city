@@ -34,7 +34,7 @@ class PasswordResetLinkController extends Controller
         $user = User::where('email', $request->email)->first();
         if ($user) {
             $user->sendEmailVerificationNotification();
-            Cache::put('forgot_password', $randomNumber, 1000);
+            Cache::put('forgot_password', $randomNumber, 86400);
             return response()->json(__('validation.A 6-digit code has been sent to your account'), 200);
         } else {
             return response()->json(__('validation.email not found'), 404);
